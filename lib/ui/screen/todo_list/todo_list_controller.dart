@@ -11,4 +11,10 @@ class TodoListController extends _$TodoListController {
     final todos = ref.watch(todoRepositoryProvider).getTodos();
     return todos;
   }
+
+  Future<void> addTodo(Todo todo) async {
+    final repository = ref.watch(todoRepositoryProvider);
+    repository.addTodo(todo);
+    ref.invalidateSelf();
+  }
 }

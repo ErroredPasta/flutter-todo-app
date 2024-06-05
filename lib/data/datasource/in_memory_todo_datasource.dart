@@ -14,6 +14,11 @@ class InMemoryTodoDatasource implements TodoDatasource {
   Future<List<Todo>> getTodos() async {
     return _todo;
   }
+
+  @override
+  Future<void> addTodo(Todo todo) async {
+    _todo.add(todo);
+  }
 }
 
 @riverpod

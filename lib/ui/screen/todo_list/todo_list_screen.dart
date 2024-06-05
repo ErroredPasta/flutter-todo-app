@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/domain/model/todo.dart';
+import 'package:todo_app/ui/screen/todo_add/todo_add_screen.dart';
 import 'package:todo_app/ui/screen/todo_list/todo_item.dart';
 import 'package:todo_app/ui/screen/todo_list/todo_list_controller.dart';
 
@@ -16,6 +17,10 @@ class TodoListScreen extends ConsumerWidget {
         data: _onSuccess,
         error: _onError,
         loading: _onLoading,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showAddScreen(context),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -38,5 +43,16 @@ class TodoListScreen extends ConsumerWidget {
 
   Widget _onLoading() {
     return const CircularProgressIndicator();
+  }
+
+  void _showAddScreen(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+      ),
+      builder: (ctx) => const TodoAddScreen(),
+      clipBehavior: Clip.hardEdge,
+    );
   }
 }

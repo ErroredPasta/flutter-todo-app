@@ -15,6 +15,11 @@ class TodoRepositoryImpl implements TodoRepository {
   Future<List<Todo>> getTodos() {
     return datasource.getTodos();
   }
+
+  @override
+  Future<void> addTodo(Todo todo) {
+    return datasource.addTodo(todo);
+  }
 }
 
 @riverpod
