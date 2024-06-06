@@ -31,7 +31,11 @@ class TodoListScreen extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: todos.map(TodoItem.new).toList(),
+          children: todos
+              .map(
+                (todo) => TodoItem(todo),
+              )
+              .toList(),
         ),
       ),
     );

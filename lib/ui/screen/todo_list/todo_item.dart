@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/domain/model/todo.dart';
+import 'package:todo_app/ui/screen/todo_detail/todo_detail_screen.dart';
 
 class TodoItem extends StatelessWidget {
   final Todo todo;
@@ -10,35 +11,38 @@ class TodoItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 100,
-      child: Card(
-        elevation: 8,
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  todo.todo,
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        fontSize: 20,
-                        decoration:
-                            todo.done ? TextDecoration.lineThrough : null,
-                        color: todo.done ? Colors.grey : null,
-                      ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                if (todo.dateTime != null)
+      child: InkWell(
+        onTap: () => _onTodoItemTap(context, todo),
+        child: Card(
+          elevation: 8,
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
                   Text(
-                    _formatDateTime(todo.dateTime!),
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: Colors.grey,
+                    todo.todo,
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          fontSize: 20,
+                          decoration:
+                              todo.done ? TextDecoration.lineThrough : null,
+                          color: todo.done ? Colors.grey : null,
                         ),
-                  )
-              ],
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  if (todo.dateTime != null)
+                    Text(
+                      _formatDateTime(todo.dateTime!),
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            color: Colors.grey,
+                          ),
+                    )
+                ],
+              ),
             ),
           ),
         ),
@@ -56,5 +60,20 @@ class TodoItem extends StatelessWidget {
       1 => 'Tomorrow',
       _ => '${dateTime.year}.${dateTime.month}.${dateTime.day}'
     }} $time';
+  }
+
+  void _onTodoItemTap(BuildContext context, Todo todo) {
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) => Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: TodoDetailScreen(todo),
+      ),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+      ),
+      clipBehavior: Clip.hardEdge,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+    );
   }
 }
