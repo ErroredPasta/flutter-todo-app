@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/domain/model/todo.dart';
-import 'package:todo_app/ui/screen/todo_list/todo_list_controller.dart';
+import 'package:todo_app/ui/screen/todo_list_controller.dart';
+import 'package:todo_app/ui/util/date_time_formatter.dart';
 import 'package:uuid/v4.dart';
 
 final _todoInput = StateProvider.autoDispose<String>(
@@ -39,7 +40,7 @@ class TodoAddScreen extends ConsumerWidget {
                 Text(
                   selectedDate == null
                       ? 'No Date Chosen'
-                      : _formatDateTime(selectedDate),
+                      : formatDateTime(selectedDate),
                 ),
                 const Spacer(),
                 if (selectedDate != null)
@@ -112,11 +113,6 @@ class TodoAddScreen extends ConsumerWidget {
       hours: pickedTime.hour,
       minutes: pickedTime.minute,
     ));
-  }
-
-  String _formatDateTime(DateTime dateTime) {
-    final DateTime(:year, :month, :day, :hour, :minute) = dateTime;
-    return '$year.$month.$day $hour:$minute';
   }
 
   void _submitTodo(

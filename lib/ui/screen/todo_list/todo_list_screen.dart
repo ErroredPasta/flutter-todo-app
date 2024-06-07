@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/domain/model/todo.dart';
 import 'package:todo_app/ui/screen/todo_add/todo_add_screen.dart';
 import 'package:todo_app/ui/screen/todo_list/todo_item.dart';
-import 'package:todo_app/ui/screen/todo_list/todo_list_controller.dart';
+import 'package:todo_app/ui/screen/todo_list_controller.dart';
 
 class TodoListScreen extends ConsumerWidget {
   const TodoListScreen({super.key});
