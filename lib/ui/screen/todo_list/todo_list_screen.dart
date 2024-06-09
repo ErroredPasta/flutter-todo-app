@@ -55,8 +55,18 @@ class TodoListScreen extends ConsumerWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
       ),
-      builder: (ctx) => const TodoAddScreen(),
+      builder: (ctx) => Padding(
+        padding: EdgeInsets.fromLTRB(
+          16,
+          16,
+          16,
+          16 + MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: const TodoAddScreen(),
+      ),
       clipBehavior: Clip.hardEdge,
+      isScrollControlled: true,
+      backgroundColor: Theme.of(context).colorScheme.surface,
     );
   }
 }
