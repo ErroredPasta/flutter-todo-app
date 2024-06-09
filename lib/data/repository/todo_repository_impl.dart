@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:todo_app/data/datasource/in_memory_todo_datasource.dart';
+import 'package:todo_app/data/datasource/database_todo_datasource.dart';
 import 'package:todo_app/data/datasource/todo_datasource.dart';
 import 'package:todo_app/domain/model/todo.dart';
 import 'package:todo_app/domain/repository/todo_repository.dart';
@@ -23,7 +23,7 @@ class TodoRepositoryImpl implements TodoRepository {
 }
 
 @riverpod
-TodoRepository todoRepository(TodoRepositoryRef ref) {
-  final datasource = ref.watch(todoDatasourceProvider);
+Future<TodoRepository> todoRepository(TodoRepositoryRef ref) async {
+  final datasource = await ref.watch(todoDatasourceProvider.future);
   return TodoRepositoryImpl(datasource: datasource);
 }

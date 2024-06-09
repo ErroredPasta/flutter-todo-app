@@ -14,13 +14,20 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+Todo _$TodoFromJson(Map<String, dynamic> json) {
+  return _Todo.fromJson(json);
+}
+
 /// @nodoc
 mixin _$Todo {
+  @JsonKey(name: '_id')
   String get id => throw _privateConstructorUsedError;
   String get todo => throw _privateConstructorUsedError;
+  @BooleanToIntConverter()
   bool get done => throw _privateConstructorUsedError;
   DateTime? get dateTime => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $TodoCopyWith<Todo> get copyWith => throw _privateConstructorUsedError;
 }
@@ -30,7 +37,11 @@ abstract class $TodoCopyWith<$Res> {
   factory $TodoCopyWith(Todo value, $Res Function(Todo) then) =
       _$TodoCopyWithImpl<$Res, Todo>;
   @useResult
-  $Res call({String id, String todo, bool done, DateTime? dateTime});
+  $Res call(
+      {@JsonKey(name: '_id') String id,
+      String todo,
+      @BooleanToIntConverter() bool done,
+      DateTime? dateTime});
 }
 
 /// @nodoc
@@ -79,7 +90,11 @@ abstract class _$$TodoImplCopyWith<$Res> implements $TodoCopyWith<$Res> {
       __$$TodoImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String todo, bool done, DateTime? dateTime});
+  $Res call(
+      {@JsonKey(name: '_id') String id,
+      String todo,
+      @BooleanToIntConverter() bool done,
+      DateTime? dateTime});
 }
 
 /// @nodoc
@@ -119,17 +134,25 @@ class __$$TodoImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$TodoImpl implements _Todo {
   const _$TodoImpl(
-      {required this.id, required this.todo, this.done = false, this.dateTime});
+      {@JsonKey(name: '_id') required this.id,
+      required this.todo,
+      @BooleanToIntConverter() this.done = false,
+      this.dateTime});
+
+  factory _$TodoImpl.fromJson(Map<String, dynamic> json) =>
+      _$$TodoImplFromJson(json);
 
   @override
+  @JsonKey(name: '_id')
   final String id;
   @override
   final String todo;
   @override
   @JsonKey()
+  @BooleanToIntConverter()
   final bool done;
   @override
   final DateTime? dateTime;
@@ -151,6 +174,7 @@ class _$TodoImpl implements _Todo {
                 other.dateTime == dateTime));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, todo, done, dateTime);
 
@@ -159,20 +183,31 @@ class _$TodoImpl implements _Todo {
   @pragma('vm:prefer-inline')
   _$$TodoImplCopyWith<_$TodoImpl> get copyWith =>
       __$$TodoImplCopyWithImpl<_$TodoImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$TodoImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _Todo implements Todo {
   const factory _Todo(
-      {required final String id,
+      {@JsonKey(name: '_id') required final String id,
       required final String todo,
-      final bool done,
+      @BooleanToIntConverter() final bool done,
       final DateTime? dateTime}) = _$TodoImpl;
 
+  factory _Todo.fromJson(Map<String, dynamic> json) = _$TodoImpl.fromJson;
+
   @override
+  @JsonKey(name: '_id')
   String get id;
   @override
   String get todo;
   @override
+  @BooleanToIntConverter()
   bool get done;
   @override
   DateTime? get dateTime;

@@ -1,8 +1,8 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+// import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:todo_app/data/datasource/todo_datasource.dart';
 import 'package:todo_app/domain/model/todo.dart';
 
-part 'in_memory_todo_datasource.g.dart';
+// part 'in_memory_todo_datasource.g.dart';
 
 class InMemoryTodoDatasource implements TodoDatasource {
   final List<Todo> _todo = [
@@ -21,7 +21,7 @@ class InMemoryTodoDatasource implements TodoDatasource {
   }
 }
 
-@riverpod
-TodoDatasource todoDatasource(TodoDatasourceRef ref) {
-  return InMemoryTodoDatasource();
-}
+// @riverpod
+// TodoDatasource todoDatasource(TodoDatasourceRef ref) {
+//   return InMemoryTodoDatasource();
+// }

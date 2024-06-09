@@ -7,14 +7,14 @@ part 'todo_list_controller.g.dart';
 @riverpod
 class TodoListController extends _$TodoListController {
   @override
-  Future<List<Todo>> build() {
-    final todos = ref.watch(todoRepositoryProvider).getTodos();
-    return todos;
+  Future<List<Todo>> build() async {
+    final repository = await ref.watch(todoRepositoryProvider.future);
+    return repository.getTodos();
   }
 
   Future<void> addTodo(Todo todo) async {
-    final repository = ref.watch(todoRepositoryProvider);
-    repository.addTodo(todo);
+    final repository = await ref.watch(todoRepositoryProvider.future);
+    await repository.addTodo(todo);
     ref.invalidateSelf();
   }
 }
