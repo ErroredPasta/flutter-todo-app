@@ -64,31 +64,8 @@ class TodoItem extends StatelessWidget {
   }
 
   void _onTodoItemTap(BuildContext context, Todo todo) {
-    showModalBottomSheet(
-      context: context,
-      builder: (ctx) => Navigator(
-        onGenerateRoute: (routeSettings) => MaterialPageRoute(
-          builder: (ctx) => Padding(
-            padding: EdgeInsets.fromLTRB(
-              16,
-              16,
-              16,
-              16 + MediaQuery.of(context).viewInsets.bottom,
-            ),
-            child: Navigator(
-              onGenerateRoute: (settings) => MaterialPageRoute(
-                builder: (ctx) => TodoDetailScreen(todo),
-              ),
-            ),
-          ),
-        ),
-      ),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
-      ),
-      clipBehavior: Clip.hardEdge,
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      isScrollControlled: true,
-    );
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (ctx) => TodoDetailScreen(todo),
+    ));
   }
 }
