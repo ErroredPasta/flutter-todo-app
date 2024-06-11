@@ -19,6 +19,17 @@ class InMemoryTodoDatasource implements TodoDatasource {
   Future<void> addTodo(Todo todo) async {
     _todo.add(todo);
   }
+
+  @override
+  Future<void> editTodo(Todo todo) async {
+    final index = _todo.indexWhere(
+      (t) => t.id == todo.id,
+    );
+
+    if (index == -1) throw Exception('Todo with id ${todo.id} not found');
+
+    _todo[index] = todo;
+  }
 }
 
 // @riverpod

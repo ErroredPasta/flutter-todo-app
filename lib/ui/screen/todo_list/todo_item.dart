@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:todo_app/domain/model/todo.dart';
 import 'package:todo_app/ui/screen/todo_detail/todo_detail_screen.dart';
 
@@ -65,15 +66,29 @@ class TodoItem extends StatelessWidget {
   void _onTodoItemTap(BuildContext context, Todo todo) {
     showModalBottomSheet(
       context: context,
-      builder: (ctx) => Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: TodoDetailScreen(todo),
+      builder: (ctx) => Navigator(
+        onGenerateRoute: (routeSettings) => MaterialPageRoute(
+          builder: (ctx) => Padding(
+            padding: EdgeInsets.fromLTRB(
+              16,
+              16,
+              16,
+              16 + MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: Navigator(
+              onGenerateRoute: (settings) => MaterialPageRoute(
+                builder: (ctx) => TodoDetailScreen(todo),
+              ),
+            ),
+          ),
+        ),
       ),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
       ),
       clipBehavior: Clip.hardEdge,
       backgroundColor: Theme.of(context).colorScheme.surface,
+      isScrollControlled: true,
     );
   }
 }

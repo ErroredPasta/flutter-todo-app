@@ -25,6 +25,16 @@ class DatabaseTodoDatasource implements TodoDatasource {
     final todos = todosInMap.map(Todo.fromJson).toList();
     return todos;
   }
+
+  @override
+  Future<void> editTodo(Todo todo) async {
+    database.update(
+      table,
+      todo.toJson(),
+      where: '${Columns.id} = ?',
+      whereArgs: [todo.id],
+    );
+  }
 }
 
 @riverpod

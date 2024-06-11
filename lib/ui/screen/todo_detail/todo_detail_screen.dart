@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/domain/model/todo.dart';
+import 'package:todo_app/ui/screen/todo_edit/todo_edit_screen.dart';
 import 'package:todo_app/ui/util/date_time_formatter.dart';
 
 class TodoDetailScreen extends StatelessWidget {
@@ -24,13 +25,28 @@ class TodoDetailScreen extends StatelessWidget {
           if (todo.dateTime != null) const SizedBox(height: 32),
           Align(
             alignment: Alignment.centerRight,
-            child: ElevatedButton(
-              child: const Text('Close'),
-              onPressed: () => Navigator.of(context).pop(),
+            child: Row(
+              children: [
+                ElevatedButton(
+                  onPressed: () => _showEditScreen(context, todo),
+                  child: const Text('Edit'),
+                ),
+                ElevatedButton(
+                  child: const Text('Close'),
+                  onPressed: () =>
+                      Navigator.of(context, rootNavigator: true).pop(),
+                ),
+              ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  void _showEditScreen(BuildContext context, Todo todo) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (ctx) => TodoEditScreen(todo),
+    ));
   }
 }
