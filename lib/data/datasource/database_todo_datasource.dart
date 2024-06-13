@@ -16,12 +16,12 @@ class DatabaseTodoDatasource implements TodoDatasource {
   @override
   Future<void> addTodo(Todo todo) async {
     final todoInMap = todo.toJson();
-    await database.insert(table, todoInMap);
+    await database.insert(todoTable, todoInMap);
   }
 
   @override
   Future<List<Todo>> getTodos() async {
-    final todosInMap = await database.query(table);
+    final todosInMap = await database.query(todoTable);
     final todos = todosInMap.map(Todo.fromJson).toList();
     return todos;
   }
@@ -29,7 +29,7 @@ class DatabaseTodoDatasource implements TodoDatasource {
   @override
   Future<void> editTodo(Todo todo) async {
     database.update(
-      table,
+      todoTable,
       todo.toJson(),
       where: '${Columns.id} = ?',
       whereArgs: [todo.id],

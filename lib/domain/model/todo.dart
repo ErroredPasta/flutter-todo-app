@@ -9,9 +9,10 @@ part 'todo.g.dart';
 sealed class Todo with _$Todo {
   const factory Todo({
     @JsonKey(name: '_id') required String id,
-    required String todo,
+    required String title,
     @BooleanToIntConverter() @Default(false) bool done,
     DateTime? dateTime,
+    @Default(null) String? note,
   }) = _Todo;
 
   factory Todo.fromJson(Map<String, dynamic> json) => _$TodoFromJson(json);

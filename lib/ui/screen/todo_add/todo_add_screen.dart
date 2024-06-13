@@ -122,7 +122,7 @@ class TodoAddScreen extends ConsumerWidget {
   ) {
     controller.addTodo(Todo(
       id: const UuidV4().generate(),
-      todo: todo,
+      title: todo,
       dateTime: dateTime,
     ));
   }

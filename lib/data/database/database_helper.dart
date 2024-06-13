@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:todo_app/data/database/database_migration.dart';
 
 import 'todo_table_info.dart';
 
@@ -8,7 +9,7 @@ part 'database_helper.g.dart';
 
 class DatabaseHelper {
   static const _databaseName = "todoDatabase.db";
-  static const _databaseVersion = 1;
+  static final _databaseVersion = 1 + databaseMigrations.length;
 
   // make this a singleton class
   DatabaseHelper._privateConstructor();
@@ -29,16 +30,27 @@ class DatabaseHelper {
     return await openDatabase(
       path,
       version: _databaseVersion,
-      onCreate: (db, version) {
+      onCreate: (db, version) async {
         db.execute('''
-          CREATE TABLE $table (
+          CREATE TABLE $todoTable (
             ${Columns.id}	TEXT NOT NULL UNIQUE,
-            ${Columns.todo}	TEXT NOT NULL,
+            todo TEXT NOT NULL,
             ${Columns.done}	INTEGER NOT NULL,
             ${Columns.dateTime}	TEXT,
             PRIMARY KEY(${Columns.id})
           )
           ''');
+
+        for (int v = 2; v <= version; ++v) {
+          final migrationFunction = databaseMigrations[v]!;
+          await migrationFunction(db);
+        }
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        for (int v = oldVersion + 1; v <= newVersion; ++v) {
+          final migrationFunction = databaseMigrations[v]!;
+          await migrationFunction(db);
+        }
       },
     );
   }

@@ -25,7 +25,7 @@ class TodoItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    todo.todo,
+                    todo.title,
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           fontSize: 20,
                           decoration:

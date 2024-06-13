@@ -15,7 +15,7 @@ class TodoDetailScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            todo.todo,
+            todo.title,
             style:
                 Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 20),
           ),

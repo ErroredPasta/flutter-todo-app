@@ -22,10 +22,11 @@ Todo _$TodoFromJson(Map<String, dynamic> json) {
 mixin _$Todo {
   @JsonKey(name: '_id')
   String get id => throw _privateConstructorUsedError;
-  String get todo => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
   @BooleanToIntConverter()
   bool get done => throw _privateConstructorUsedError;
   DateTime? get dateTime => throw _privateConstructorUsedError;
+  String? get note => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -39,9 +40,10 @@ abstract class $TodoCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: '_id') String id,
-      String todo,
+      String title,
       @BooleanToIntConverter() bool done,
-      DateTime? dateTime});
+      DateTime? dateTime,
+      String? note});
 }
 
 /// @nodoc
@@ -58,18 +60,19 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
   @override
   $Res call({
     Object? id = null,
-    Object? todo = null,
+    Object? title = null,
     Object? done = null,
     Object? dateTime = freezed,
+    Object? note = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      todo: null == todo
-          ? _value.todo
-          : todo // ignore: cast_nullable_to_non_nullable
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
               as String,
       done: null == done
           ? _value.done
@@ -79,6 +82,10 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
           ? _value.dateTime
           : dateTime // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      note: freezed == note
+          ? _value.note
+          : note // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -92,9 +99,10 @@ abstract class _$$TodoImplCopyWith<$Res> implements $TodoCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: '_id') String id,
-      String todo,
+      String title,
       @BooleanToIntConverter() bool done,
-      DateTime? dateTime});
+      DateTime? dateTime,
+      String? note});
 }
 
 /// @nodoc
@@ -108,18 +116,19 @@ class __$$TodoImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? todo = null,
+    Object? title = null,
     Object? done = null,
     Object? dateTime = freezed,
+    Object? note = freezed,
   }) {
     return _then(_$TodoImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      todo: null == todo
-          ? _value.todo
-          : todo // ignore: cast_nullable_to_non_nullable
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
               as String,
       done: null == done
           ? _value.done
@@ -129,6 +138,10 @@ class __$$TodoImplCopyWithImpl<$Res>
           ? _value.dateTime
           : dateTime // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      note: freezed == note
+          ? _value.note
+          : note // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -138,9 +151,10 @@ class __$$TodoImplCopyWithImpl<$Res>
 class _$TodoImpl implements _Todo {
   const _$TodoImpl(
       {@JsonKey(name: '_id') required this.id,
-      required this.todo,
+      required this.title,
       @BooleanToIntConverter() this.done = false,
-      this.dateTime});
+      this.dateTime,
+      this.note = null});
 
   factory _$TodoImpl.fromJson(Map<String, dynamic> json) =>
       _$$TodoImplFromJson(json);
@@ -149,17 +163,20 @@ class _$TodoImpl implements _Todo {
   @JsonKey(name: '_id')
   final String id;
   @override
-  final String todo;
+  final String title;
   @override
   @JsonKey()
   @BooleanToIntConverter()
   final bool done;
   @override
   final DateTime? dateTime;
+  @override
+  @JsonKey()
+  final String? note;
 
   @override
   String toString() {
-    return 'Todo(id: $id, todo: $todo, done: $done, dateTime: $dateTime)';
+    return 'Todo(id: $id, title: $title, done: $done, dateTime: $dateTime, note: $note)';
   }
 
   @override
@@ -168,15 +185,16 @@ class _$TodoImpl implements _Todo {
         (other.runtimeType == runtimeType &&
             other is _$TodoImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.todo, todo) || other.todo == todo) &&
+            (identical(other.title, title) || other.title == title) &&
             (identical(other.done, done) || other.done == done) &&
             (identical(other.dateTime, dateTime) ||
-                other.dateTime == dateTime));
+                other.dateTime == dateTime) &&
+            (identical(other.note, note) || other.note == note));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, todo, done, dateTime);
+  int get hashCode => Object.hash(runtimeType, id, title, done, dateTime, note);
 
   @JsonKey(ignore: true)
   @override
@@ -195,9 +213,10 @@ class _$TodoImpl implements _Todo {
 abstract class _Todo implements Todo {
   const factory _Todo(
       {@JsonKey(name: '_id') required final String id,
-      required final String todo,
+      required final String title,
       @BooleanToIntConverter() final bool done,
-      final DateTime? dateTime}) = _$TodoImpl;
+      final DateTime? dateTime,
+      final String? note}) = _$TodoImpl;
 
   factory _Todo.fromJson(Map<String, dynamic> json) = _$TodoImpl.fromJson;
 
@@ -205,12 +224,14 @@ abstract class _Todo implements Todo {
   @JsonKey(name: '_id')
   String get id;
   @override
-  String get todo;
+  String get title;
   @override
   @BooleanToIntConverter()
   bool get done;
   @override
   DateTime? get dateTime;
+  @override
+  String? get note;
   @override
   @JsonKey(ignore: true)
   _$$TodoImplCopyWith<_$TodoImpl> get copyWith =>

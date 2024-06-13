@@ -6,8 +6,8 @@ import 'package:todo_app/domain/model/todo.dart';
 
 class InMemoryTodoDatasource implements TodoDatasource {
   final List<Todo> _todo = [
-    const Todo(id: 'id1', todo: 'todo1'),
-    Todo(id: 'id2', todo: 'todo2', done: true, dateTime: DateTime.now())
+    const Todo(id: 'id1', title: 'todo1'),
+    Todo(id: 'id2', title: 'todo2', done: true, dateTime: DateTime.now())
   ];
 
   @override

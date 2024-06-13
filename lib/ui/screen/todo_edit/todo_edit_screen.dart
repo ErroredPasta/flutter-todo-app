@@ -23,7 +23,7 @@ class _TodoEditState extends ConsumerState<TodoEditScreen> {
   void initState() {
     super.initState();
     _todoInput = StateProvider.autoDispose<String>(
-      (ref) => widget.todo.todo,
+      (ref) => widget.todo.title,
     );
 
     _selectedDateProvider = StateProvider.autoDispose<DateTime?>(
@@ -137,7 +137,7 @@ class _TodoEditState extends ConsumerState<TodoEditScreen> {
     TodoListController todoController,
   ) {
     todoController.editTodo(widget.todo.copyWith(
-      todo: todoInput,
+      title: todoInput,
       dateTime: selectedDate,
     ));
   }

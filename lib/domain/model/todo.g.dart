@@ -8,7 +8,7 @@ part of 'todo.dart';
 
 _$TodoImpl _$$TodoImplFromJson(Map<String, dynamic> json) => _$TodoImpl(
       id: json['_id'] as String,
-      todo: json['todo'] as String,
+      title: json['title'] as String,
       done: json['done'] == null
           ? false
           : const BooleanToIntConverter()
@@ -16,12 +16,14 @@ _$TodoImpl _$$TodoImplFromJson(Map<String, dynamic> json) => _$TodoImpl(
       dateTime: json['dateTime'] == null
           ? null
           : DateTime.parse(json['dateTime'] as String),
+      note: json['note'] as String? ?? null,
     );
 
 Map<String, dynamic> _$$TodoImplToJson(_$TodoImpl instance) =>
     <String, dynamic>{
       '_id': instance.id,
-      'todo': instance.todo,
+      'title': instance.title,
       'done': const BooleanToIntConverter().toJson(instance.done),
       'dateTime': instance.dateTime?.toIso8601String(),
+      'note': instance.note,
     };
