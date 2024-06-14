@@ -25,4 +25,10 @@ class TodoListController extends _$TodoListController {
 
     return isChanged;
   }
+
+  Future<void> deleteTodo(String todoId) async {
+    final repository = await ref.watch(todoRepositoryProvider.future);
+    repository.deleteTodo(todoId);
+    ref.invalidateSelf();
+  }
 }

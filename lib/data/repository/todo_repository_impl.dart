@@ -25,6 +25,11 @@ class TodoRepositoryImpl implements TodoRepository {
   Future<bool> editTodo(Todo todo) {
     return datasource.editTodo(todo);
   }
+
+  @override
+  Future<void> deleteTodo(String todoId) {
+    return datasource.deleteTodo(todoId);
+  }
 }
 
 @riverpod

@@ -29,11 +29,21 @@ class DatabaseTodoDatasource implements TodoDatasource {
   @override
   Future<bool> editTodo(Todo todo) async {
     return await database.update(
+          todoTable,
+          todo.toJson(),
+          where: '${Columns.id} = ?',
+          whereArgs: [todo.id],
+        ) >
+        0;
+  }
+
+  @override
+  Future<void> deleteTodo(String todoId) async {
+    await database.delete(
       todoTable,
-      todo.toJson(),
       where: '${Columns.id} = ?',
-      whereArgs: [todo.id],
-    ) > 0;
+      whereArgs: [todoId],
+    );
   }
 }
 

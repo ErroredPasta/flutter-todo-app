@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/domain/model/todo.dart';
 import 'package:todo_app/ui/component/rounded_rectangle_button.dart';
 import 'package:todo_app/ui/screen/todo_edit/todo_edit_screen.dart';
+import 'package:todo_app/ui/screen/todo_list_controller.dart';
 import 'package:todo_app/ui/util/date_time_formatter.dart';
 
 late AutoDisposeStateProvider<Todo> _todo;
@@ -26,6 +27,7 @@ class _TodoDetailScreenState extends ConsumerState<TodoDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final todo = ref.watch(_todo);
+    final todoController = ref.watch(todoListControllerProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -74,7 +76,7 @@ class _TodoDetailScreenState extends ConsumerState<TodoDetailScreen> {
                       ),
                     ),
                     child: const Text('Delete Todo'),
-                    onPressed: () {},
+                    onPressed: () => _deleteButtonClick(context, todoController, todo.id),
                   ),
                 ),
               ],
@@ -108,6 +110,23 @@ class _TodoDetailScreenState extends ConsumerState<TodoDetailScreen> {
     editResult.then((result) {
       if (result != null) ref.read(_todo.notifier).state = result;
     });
+  }
+
+  void _deleteButtonClick(
+      BuildContext context, TodoListController todoController, String todoId) {
+    final deleteClicked = showDialog<bool>(
+      context: context,
+      builder: (context) => const DeleteDialog(),
+    );
+
+    deleteClicked.then(
+      (clicked) {
+        if (clicked == true) {
+          todoController.deleteTodo(todoId);
+          Navigator.of(context).pop();
+        }
+      },
+    );
   }
 }
 
@@ -154,6 +173,32 @@ class DetailScreenNoteSection extends StatelessWidget {
           height: 16,
         ),
         Text(noteContent != null ? noteContent! : 'No note')
+      ],
+    );
+  }
+}
+
+class DeleteDialog extends StatelessWidget {
+  const DeleteDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Delete Todo'),
+      content: const Text('Really want to delete?'),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop(true);
+          },
+          child: const Text('Delete'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Cancel'),
+        ),
       ],
     );
   }
