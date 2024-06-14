@@ -18,9 +18,11 @@ class TodoListController extends _$TodoListController {
     ref.invalidateSelf();
   }
 
-  Future<void> editTodo(Todo todo) async {
+  Future<bool> editTodo(Todo todo) async {
     final repository = await ref.watch(todoRepositoryProvider.future);
-    await repository.editTodo(todo);
+    final isChanged = await repository.editTodo(todo);
     ref.invalidateSelf();
+
+    return isChanged;
   }
 }

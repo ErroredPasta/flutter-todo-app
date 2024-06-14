@@ -22,7 +22,7 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
-  Future<void> editTodo(Todo todo) {
+  Future<bool> editTodo(Todo todo) {
     return datasource.editTodo(todo);
   }
 }

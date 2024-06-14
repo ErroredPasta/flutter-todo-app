@@ -68,13 +68,16 @@ class _TodoEditScreenState extends ConsumerState<TodoEditScreen> {
               child: FilledButton(
                 style: roundedRectangleButtonStyle,
                 onPressed: () {
-                  _editTodo(
+                  final updateResult = _editTodo(
                     todoTitle,
                     todoNote,
                     todoDateTime,
                     todoController,
                   );
-                  Navigator.of(context).pop();
+
+                  updateResult.then(
+                    (result) => Navigator.of(context).pop(result),
+                  );
                 },
                 child: const Text('Edit Todo'),
               ),
@@ -85,19 +88,19 @@ class _TodoEditScreenState extends ConsumerState<TodoEditScreen> {
     );
   }
 
-  void _editTodo(
+  Future<Todo?> _editTodo(
     String title,
     String note,
     DateTime? dateTime,
     TodoListController controller,
-  ) {
-    controller.editTodo(
-      widget.todo.copyWith(
-        title: title,
-        note: note.isEmpty ? null : note,
-        dateTime: dateTime,
-      ),
+  ) async {
+    final updatedTodo = widget.todo.copyWith(
+      title: title,
+      note: note.isEmpty ? null : note,
+      dateTime: dateTime,
     );
+
+    return await controller.editTodo(updatedTodo) ? updatedTodo : null;
   }
 }
 

@@ -1,16 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/domain/model/todo.dart';
 import 'package:todo_app/ui/component/rounded_rectangle_button.dart';
 import 'package:todo_app/ui/screen/todo_edit/todo_edit_screen.dart';
 import 'package:todo_app/ui/util/date_time_formatter.dart';
 
-class TodoDetailScreen extends StatelessWidget {
+late AutoDisposeStateProvider<Todo> _todo;
+
+class TodoDetailScreen extends ConsumerStatefulWidget {
   final Todo todo;
 
   const TodoDetailScreen(this.todo, {super.key});
 
   @override
+  ConsumerState<TodoDetailScreen> createState() => _TodoDetailScreenState();
+}
+
+class _TodoDetailScreenState extends ConsumerState<TodoDetailScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _todo = StateProvider.autoDispose((ref) => widget.todo);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final todo = ref.watch(_todo);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(todo.title),
@@ -21,7 +37,8 @@ class TodoDetailScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (todo.dateTime != null) DetailScreenDateTimeSection(todo.dateTime!),
+            if (todo.dateTime != null)
+              DetailScreenDateTimeSection(todo.dateTime!),
             if (todo.dateTime != null) const SizedBox(height: 16),
             const SizedBox(height: 16),
             DetailScreenNoteSection(todo.note),
@@ -39,7 +56,7 @@ class TodoDetailScreen extends StatelessWidget {
                         Theme.of(context).colorScheme.onPrimaryContainer,
                       ),
                     ),
-                    onPressed: () => _showEditScreen(context, todo),
+                    onPressed: () => _showEditScreen(context, ref, todo),
                     child: const Text('Edit Todo'),
                   ),
                 ),
@@ -83,10 +100,14 @@ class TodoDetailScreen extends StatelessWidget {
     );
   }
 
-  void _showEditScreen(BuildContext context, Todo todo) {
-    Navigator.of(context).push(MaterialPageRoute(
+  void _showEditScreen(BuildContext context, WidgetRef ref, Todo todo) {
+    final editResult = Navigator.of(context).push(MaterialPageRoute(
       builder: (ctx) => TodoEditScreen(todo),
     ));
+
+    editResult.then((result) {
+      if (result != null) ref.read(_todo.notifier).state = result;
+    });
   }
 }
 
