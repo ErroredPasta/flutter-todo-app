@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/domain/model/todo.dart';
+import 'package:todo_app/ui/component/rounded_rectangle_button.dart';
 import 'package:todo_app/ui/screen/todo_list_controller.dart';
 import 'package:todo_app/ui/util/date_time_formatter.dart';
 import 'package:uuid/v4.dart';
 
-final _todoInput = StateProvider.autoDispose<String>(
+final _todoTitle = StateProvider.autoDispose<String>(
   (ref) => '',
 );
 
-final _selectedDateProvider = StateProvider.autoDispose<DateTime?>(
+final _todoNote = StateProvider.autoDispose<String>(
+  (ref) => '',
+);
+
+final _todoDateTime = StateProvider.autoDispose<DateTime?>(
   (ref) => null,
 );
 
@@ -19,76 +24,161 @@ class TodoAddScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final todoController = ref.read(todoListControllerProvider.notifier);
-    final selectedDate = ref.watch(_selectedDateProvider);
-    final todoInput = ref.watch(_todoInput);
+    final todoTitle = ref.watch(_todoTitle);
+    final todoNote = ref.watch(_todoNote);
+    final todoDateTime = ref.watch(_todoDateTime);
 
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Navigator.of(context).pop(),
+          icon: const Icon(Icons.close),
+        ),
+        title: const Text('New Todo'),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
+            TextFormField(
               decoration: const InputDecoration(
-                labelText: 'Todo',
+                hintText: 'Enter Title',
+                border: OutlineInputBorder(),
               ),
-              onChanged: (value) => ref.read(_todoInput.notifier).state = value,
+              onChanged: (value) => ref.read(_todoTitle.notifier).state = value,
             ),
-            const SizedBox(height: 32.0),
-            Row(
-              children: [
-                Text(
-                  selectedDate == null
-                      ? 'No Date Chosen'
-                      : formatDateTime(selectedDate),
-                ),
-                const Spacer(),
-                if (selectedDate != null)
-                  ElevatedButton(
-                    onPressed: () =>
-                        ref.read(_selectedDateProvider.notifier).state = null,
-                    child: const Text('Delete Date'),
-                  ),
-                const SizedBox(
-                  width: 16,
-                ),
-                ElevatedButton(
-                  onPressed: () => _pickDateTime(context, ref),
-                  child: const Text('Choose Date'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 32.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Cancel'),
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    _submitTodo(todoInput, selectedDate, todoController);
-                    Navigator.of(context).pop();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        Theme.of(context).colorScheme.primaryContainer,
-                    foregroundColor:
-                        Theme.of(context).colorScheme.onPrimaryContainer,
-                  ),
-                  child: const Text('Add Todo'),
-                )
-              ],
+            const SizedBox(height: 32),
+            const AddScreenNoteSection(),
+            const SizedBox(height: 32),
+            const AddScreenDateTimeSection(),
+            const Spacer(),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                style: roundedRectangleButtonStyle,
+                onPressed: () {
+                  _submitTodo(
+                    todoTitle,
+                    todoNote,
+                    todoDateTime,
+                    todoController,
+                  );
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Add Todo'),
+              ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  void _submitTodo(
+    String title,
+    String note,
+    DateTime? dateTime,
+    TodoListController controller,
+  ) {
+    controller.addTodo(Todo(
+      id: const UuidV4().generate(),
+      title: title,
+      note: note.isEmpty ? null : note,
+      dateTime: dateTime,
+    ));
+  }
+}
+
+class AddScreenNoteSection extends ConsumerWidget {
+  const AddScreenNoteSection({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Notes',
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge!
+              .copyWith(fontWeight: FontWeight.bold, fontSize: 20),
+        ),
+        const SizedBox(
+          height: 12,
+        ),
+        TextFormField(
+          minLines: 3,
+          maxLines: 6,
+          decoration: const InputDecoration(
+            hintText: 'Add Note',
+            border: OutlineInputBorder(),
+          ),
+          onChanged: (value) => ref.read(_todoNote.notifier).state = value,
+        ),
+      ],
+    );
+  }
+}
+
+class AddScreenDateTimeSection extends ConsumerStatefulWidget {
+  const AddScreenDateTimeSection({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() {
+    return _AddScreenDateTimeSectionState();
+  }
+}
+
+class _AddScreenDateTimeSectionState
+    extends ConsumerState<AddScreenDateTimeSection> {
+  final _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final todoDateTime = ref.watch(_todoDateTime);
+
+    if (todoDateTime != null) _controller.text = formatDateTime(todoDateTime);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Due Date',
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge!
+              .copyWith(fontWeight: FontWeight.bold, fontSize: 20),
+        ),
+        const SizedBox(
+          height: 12,
+        ),
+        TextFormField(
+          readOnly: true,
+          controller: _controller,
+          decoration: InputDecoration(
+            hintText: 'Pick a Date',
+            border: const OutlineInputBorder(),
+            suffixIcon: todoDateTime == null
+                ? IconButton(
+                    icon: const Icon(Icons.calendar_month_rounded),
+                    onPressed: () => _pickDateTime(context, ref),
+                  )
+                : IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () =>
+                        ref.read(_todoDateTime.notifier).state = null,
+                  ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -109,21 +199,9 @@ class TodoAddScreen extends ConsumerWidget {
 
     if (pickedDate == null || pickedTime == null) return;
 
-    ref.read(_selectedDateProvider.notifier).state = pickedDate.add(Duration(
+    ref.read(_todoDateTime.notifier).state = pickedDate.add(Duration(
       hours: pickedTime.hour,
       minutes: pickedTime.minute,
-    ));
-  }
-
-  void _submitTodo(
-    String todo,
-    DateTime? dateTime,
-    TodoListController controller,
-  ) {
-    controller.addTodo(Todo(
-      id: const UuidV4().generate(),
-      title: todo,
-      dateTime: dateTime,
     ));
   }
 }
