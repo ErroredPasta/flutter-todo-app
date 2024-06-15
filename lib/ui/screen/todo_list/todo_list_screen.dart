@@ -13,10 +13,12 @@ class TodoListScreen extends ConsumerWidget {
     final todos = ref.watch(todoListControllerProvider);
 
     return Scaffold(
-      body: todos.when(
-        data: _onSuccess,
-        error: _onError,
-        loading: _onLoading,
+      body: SafeArea(
+        child: todos.when(
+          data: _onSuccess,
+          error: _onError,
+          loading: _onLoading,
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddScreen(context),
