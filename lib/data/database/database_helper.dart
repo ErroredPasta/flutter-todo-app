@@ -1,11 +1,4 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
-import 'package:todo_app/data/database/database_migration.dart';
-
-import 'todo_table_info.dart';
-
-part 'database_helper.g.dart';
+part of '../data_layer.dart';
 
 class DatabaseHelper {
   static const _databaseName = "todoDatabase.db";

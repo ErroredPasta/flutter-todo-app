@@ -1,12 +1,4 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:todo_app/data/database/database_helper.dart';
-import 'package:todo_app/data/datasource/todo_datasource.dart';
-import 'package:todo_app/domain/model/todo.dart';
-
-import '../database/todo_table_info.dart';
-
-part 'database_todo_datasource.g.dart';
+part of '../data_layer.dart';
 
 class DatabaseTodoDatasource implements TodoDatasource {
   final Database database;

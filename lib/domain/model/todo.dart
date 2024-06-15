@@ -1,9 +1,5 @@
 // ignore_for_file: invalid_annotation_target
-
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-part 'todo.freezed.dart';
-part 'todo.g.dart';
+part of '../domain_layer.dart';
 
 @freezed
 sealed class Todo with _$Todo {

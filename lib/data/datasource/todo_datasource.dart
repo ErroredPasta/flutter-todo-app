@@ -1,4 +1,4 @@
-import 'package:todo_app/domain/model/todo.dart';
+import '../../domain/domain_layer.dart';
 
 abstract class TodoDatasource {
   Future<List<Todo>> getTodos();

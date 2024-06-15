@@ -1,10 +1,4 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:todo_app/data/datasource/database_todo_datasource.dart';
-import 'package:todo_app/data/datasource/todo_datasource.dart';
-import 'package:todo_app/domain/model/todo.dart';
-import 'package:todo_app/domain/repository/todo_repository.dart';
-
-part 'todo_repository_impl.g.dart';
+part of '../data_layer.dart';
 
 class TodoRepositoryImpl implements TodoRepository {
   final TodoDatasource datasource;

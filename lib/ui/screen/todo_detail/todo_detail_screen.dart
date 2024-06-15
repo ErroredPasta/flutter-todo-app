@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_app/domain/model/todo.dart';
 import 'package:todo_app/ui/component/rounded_rectangle_button.dart';
 import 'package:todo_app/ui/screen/todo_edit/todo_edit_screen.dart';
-import 'package:todo_app/ui/screen/todo_list_controller.dart';
 import 'package:todo_app/ui/util/date_time_formatter.dart';
+
+import '../../../domain/domain_layer.dart';
+import '../../ui_layer.dart';
 
 late AutoDisposeStateProvider<Todo> _todo;
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:todo_app/domain/model/todo.dart';
 import 'package:todo_app/ui/screen/todo_detail/todo_detail_screen.dart';
+
+import '../../../domain/domain_layer.dart';
 
 class TodoItem extends StatelessWidget {
   final Todo todo;
