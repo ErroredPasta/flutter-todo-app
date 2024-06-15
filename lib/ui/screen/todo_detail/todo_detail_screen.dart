@@ -76,7 +76,8 @@ class _TodoDetailScreenState extends ConsumerState<TodoDetailScreen> {
                       ),
                     ),
                     child: const Text('Delete Todo'),
-                    onPressed: () => _deleteButtonClick(context, todoController, todo.id),
+                    onPressed: () =>
+                        _deleteButtonClick(context, todoController, todo.id),
                   ),
                 ),
               ],
@@ -92,7 +93,16 @@ class _TodoDetailScreenState extends ConsumerState<TodoDetailScreen> {
                     Theme.of(context).colorScheme.onPrimaryContainer,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  todoController.toggleDone(todo).then(
+                    (result) {
+                      if (result) {
+                        ref.read(_todo.notifier).state =
+                            todo.copyWith(done: !todo.done);
+                      }
+                    },
+                  );
+                },
                 child: Text('Mark as ${todo.done ? "Not Done" : "Done"}'),
               ),
             )

@@ -31,4 +31,8 @@ class TodoListController extends _$TodoListController {
     repository.deleteTodo(todoId);
     ref.invalidateSelf();
   }
+
+  Future<bool> toggleDone(Todo todo) {
+    return editTodo(todo.copyWith(done: !todo.done));
+  }
 }
