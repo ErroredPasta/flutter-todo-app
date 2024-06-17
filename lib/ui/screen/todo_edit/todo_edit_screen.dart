@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/ui/component/rounded_rectangle_button.dart';
-import 'package:todo_app/ui/util/date_time_formatter.dart';
+import 'package:todo_app/ui/screen/todo_edit/widget/edit_screen_date_time_section.dart';
+import 'package:todo_app/ui/screen/todo_edit/widget/edit_screen_note_section.dart';
 
 import '../../../domain/domain_layer.dart';
 import '../../ui_layer.dart';
@@ -36,7 +37,7 @@ class _TodoEditScreenState extends ConsumerState<TodoEditScreen> {
     final todoTitle = ref.watch(_todoTitle);
     final todoNote = ref.watch(_todoNote);
     final todoDateTime = ref.watch(_todoDateTime);
-    final todoController = ref.read(todoListControllerProvider.notifier);
+    final todoController = ref.watch(todoListControllerProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -60,9 +61,16 @@ class _TodoEditScreenState extends ConsumerState<TodoEditScreen> {
               onChanged: (value) => ref.read(_todoTitle.notifier).state = value,
             ),
             const SizedBox(height: 32),
-            const EditScreenNoteSection(),
+            EditScreenNoteSection(
+              todoNote,
+              onNoteChange: (note) => ref.read(_todoNote.notifier).state = note,
+            ),
             const SizedBox(height: 32),
-            EditScreenDateTimeSection(),
+            EditScreenDateTimeSection(
+              todoDateTime,
+              onDateTimeChange: (dateTime) =>
+                  ref.read(_todoDateTime.notifier).state = dateTime,
+            ),
             const Spacer(),
             SizedBox(
               width: double.infinity,
@@ -102,110 +110,5 @@ class _TodoEditScreenState extends ConsumerState<TodoEditScreen> {
     );
 
     return await controller.editTodo(updatedTodo) ? updatedTodo : null;
-  }
-}
-
-class EditScreenNoteSection extends ConsumerWidget {
-  const EditScreenNoteSection({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final todoNote = ref.watch(_todoNote);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Notes',
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge!
-              .copyWith(fontWeight: FontWeight.bold, fontSize: 20),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        TextFormField(
-          initialValue: todoNote,
-          minLines: 3,
-          maxLines: 6,
-          decoration: const InputDecoration(
-            hintText: 'Add Note',
-            border: OutlineInputBorder(),
-          ),
-          onChanged: (value) => ref.read(_todoNote.notifier).state = value,
-        ),
-      ],
-    );
-  }
-}
-
-class EditScreenDateTimeSection extends ConsumerWidget {
-  final _controller = TextEditingController();
-
-  EditScreenDateTimeSection({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final todoDateTime = ref.watch(_todoDateTime);
-
-    if (todoDateTime != null) _controller.text = formatDateTime(todoDateTime);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Due Date',
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge!
-              .copyWith(fontWeight: FontWeight.bold, fontSize: 20),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        TextFormField(
-          readOnly: true,
-          controller: _controller,
-          decoration: InputDecoration(
-            hintText: 'Pick a Date',
-            border: const OutlineInputBorder(),
-            suffixIcon: todoDateTime == null
-                ? IconButton(
-              icon: const Icon(Icons.calendar_month_rounded),
-              onPressed: () => _pickDateTime(context, ref),
-            )
-                : IconButton(
-              icon: const Icon(Icons.delete),
-              onPressed: () =>
-              ref.read(_todoDateTime.notifier).state = null,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Future<void> _pickDateTime(BuildContext context, WidgetRef ref) async {
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-
-    if (!context.mounted) return;
-
-    final pickedTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-
-    if (pickedDate == null || pickedTime == null) return;
-
-    ref.read(_todoDateTime.notifier).state = pickedDate.add(Duration(
-      hours: pickedTime.hour,
-      minutes: pickedTime.minute,
-    ));
   }
 }
