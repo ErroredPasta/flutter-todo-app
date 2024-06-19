@@ -9,27 +9,15 @@ import 'package:todo_app/ui/screen/todo_edit/todo_edit_screen.dart';
 import '../../../domain/domain_layer.dart';
 import '../../ui_layer.dart';
 
-late AutoDisposeStateProvider<Todo> _todo;
+class TodoDetailScreen extends ConsumerWidget {
+  final String todoId;
 
-class TodoDetailScreen extends ConsumerStatefulWidget {
-  final Todo todo;
-
-  const TodoDetailScreen(this.todo, {super.key});
+  const TodoDetailScreen(this.todoId, {super.key});
 
   @override
-  ConsumerState<TodoDetailScreen> createState() => _TodoDetailScreenState();
-}
-
-class _TodoDetailScreenState extends ConsumerState<TodoDetailScreen> {
-  @override
-  void initState() {
-    super.initState();
-    _todo = StateProvider.autoDispose((ref) => widget.todo);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final todo = ref.watch(_todo);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final todo =
+        ref.watch(todoDetailControllerProvider(todoId)).requireValue;
     final todoController = ref.watch(todoListControllerProvider.notifier);
 
     return Scaffold(
@@ -97,14 +85,7 @@ class _TodoDetailScreenState extends ConsumerState<TodoDetailScreen> {
                   ),
                 ),
                 onPressed: () {
-                  todoController.toggleDone(todo).then(
-                    (result) {
-                      if (result) {
-                        ref.read(_todo.notifier).state =
-                            todo.copyWith(done: !todo.done);
-                      }
-                    },
-                  );
+                  todoController.toggleDone(todo);
                 },
                 child: Text('Mark as ${todo.done ? "Not Done" : "Done"}'),
               ),
@@ -115,14 +96,9 @@ class _TodoDetailScreenState extends ConsumerState<TodoDetailScreen> {
     );
   }
 
-  void _showEditScreen(BuildContext context, WidgetRef ref, Todo todo) {
-    final editResult = Navigator.of(context).push(MaterialPageRoute(
+  void _showEditScreen(BuildContext context, WidgetRef ref, Todo todo) {Navigator.of(context).push(MaterialPageRoute(
       builder: (ctx) => TodoEditScreen(todo),
     ));
-
-    editResult.then((result) {
-      if (result != null) ref.read(_todo.notifier).state = result;
-    });
   }
 
   void _deleteButtonClick(

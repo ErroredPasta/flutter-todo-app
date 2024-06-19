@@ -13,7 +13,7 @@ class TodoItem extends StatelessWidget {
     return SizedBox(
       height: 100,
       child: InkWell(
-        onTap: () => _onTodoItemTap(context, todo),
+        onTap: () => _onTodoItemTap(context, todo.id),
         child: Card(
           elevation: 8,
           child: Padding(
@@ -63,9 +63,9 @@ class TodoItem extends StatelessWidget {
     }} $time';
   }
 
-  void _onTodoItemTap(BuildContext context, Todo todo) {
+  void _onTodoItemTap(BuildContext context, String todoId) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (ctx) => TodoDetailScreen(todo),
+      builder: (ctx) => TodoDetailScreen(todoId),
     ));
   }
 }
