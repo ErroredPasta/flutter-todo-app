@@ -5,5 +5,6 @@ import '../domain/domain_layer.dart';
 
 part 'screen/todo_list_controller.dart';
 part 'screen/todo_detail/todo_detail_controller.dart';
+part 'screen/todo_edit/todo_edit_controller.dart';
 
 part 'ui_layer.g.dart';

@@ -188,5 +188,148 @@ class _TodoDetailControllerProviderElement
   @override
   String get todoId => (origin as TodoDetailControllerProvider).todoId;
 }
+
+String _$todoEditControllerHash() =>
+    r'373bc21c264cc716e6781b7010df370326932587';
+
+abstract class _$TodoEditController extends BuildlessAutoDisposeNotifier<Todo> {
+  late final Todo todo;
+
+  Todo build(
+    Todo todo,
+  );
+}
+
+/// See also [TodoEditController].
+@ProviderFor(TodoEditController)
+const todoEditControllerProvider = TodoEditControllerFamily();
+
+/// See also [TodoEditController].
+class TodoEditControllerFamily extends Family<Todo> {
+  /// See also [TodoEditController].
+  const TodoEditControllerFamily();
+
+  /// See also [TodoEditController].
+  TodoEditControllerProvider call(
+    Todo todo,
+  ) {
+    return TodoEditControllerProvider(
+      todo,
+    );
+  }
+
+  @override
+  TodoEditControllerProvider getProviderOverride(
+    covariant TodoEditControllerProvider provider,
+  ) {
+    return call(
+      provider.todo,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'todoEditControllerProvider';
+}
+
+/// See also [TodoEditController].
+class TodoEditControllerProvider
+    extends AutoDisposeNotifierProviderImpl<TodoEditController, Todo> {
+  /// See also [TodoEditController].
+  TodoEditControllerProvider(
+    Todo todo,
+  ) : this._internal(
+          () => TodoEditController()..todo = todo,
+          from: todoEditControllerProvider,
+          name: r'todoEditControllerProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$todoEditControllerHash,
+          dependencies: TodoEditControllerFamily._dependencies,
+          allTransitiveDependencies:
+              TodoEditControllerFamily._allTransitiveDependencies,
+          todo: todo,
+        );
+
+  TodoEditControllerProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.todo,
+  }) : super.internal();
+
+  final Todo todo;
+
+  @override
+  Todo runNotifierBuild(
+    covariant TodoEditController notifier,
+  ) {
+    return notifier.build(
+      todo,
+    );
+  }
+
+  @override
+  Override overrideWith(TodoEditController Function() create) {
+    return ProviderOverride(
+      origin: this,
+      override: TodoEditControllerProvider._internal(
+        () => create()..todo = todo,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        todo: todo,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeNotifierProviderElement<TodoEditController, Todo> createElement() {
+    return _TodoEditControllerProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is TodoEditControllerProvider && other.todo == todo;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, todo.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin TodoEditControllerRef on AutoDisposeNotifierProviderRef<Todo> {
+  /// The parameter `todo` of this provider.
+  Todo get todo;
+}
+
+class _TodoEditControllerProviderElement
+    extends AutoDisposeNotifierProviderElement<TodoEditController, Todo>
+    with TodoEditControllerRef {
+  _TodoEditControllerProviderElement(super.provider);
+
+  @override
+  Todo get todo => (origin as TodoEditControllerProvider).todo;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -7,37 +7,16 @@ import 'package:todo_app/ui/screen/todo_edit/widget/edit_screen_note_section.dar
 import '../../../domain/domain_layer.dart';
 import '../../ui_layer.dart';
 
-late AutoDisposeStateProvider<String> _todoTitle;
-late AutoDisposeStateProvider<String> _todoNote;
-late AutoDisposeStateProvider<DateTime?> _todoDateTime;
-
-class TodoEditScreen extends ConsumerStatefulWidget {
+class TodoEditScreen extends ConsumerWidget {
   final Todo todo;
 
   const TodoEditScreen(this.todo, {super.key});
 
   @override
-  ConsumerState<TodoEditScreen> createState() => _TodoEditScreenState();
-}
-
-class _TodoEditScreenState extends ConsumerState<TodoEditScreen> {
-  @override
-  void initState() {
-    super.initState();
-
-    final todo = widget.todo;
-
-    _todoTitle = StateProvider.autoDispose((ref) => todo.title);
-    _todoNote = StateProvider.autoDispose((ref) => todo.note ?? '');
-    _todoDateTime = StateProvider.autoDispose((ref) => todo.dateTime);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final todoTitle = ref.watch(_todoTitle);
-    final todoNote = ref.watch(_todoNote);
-    final todoDateTime = ref.watch(_todoDateTime);
-    final todoController = ref.watch(todoListControllerProvider.notifier);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final todoToEdit = ref.watch(todoEditControllerProvider(todo));
+    final todoEditController =
+        ref.watch(todoEditControllerProvider(todo).notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -53,23 +32,23 @@ class _TodoEditScreenState extends ConsumerState<TodoEditScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextFormField(
-              initialValue: todoTitle,
+              initialValue: todoToEdit.title,
               decoration: const InputDecoration(
                 hintText: 'Enter Title',
                 border: OutlineInputBorder(),
               ),
-              onChanged: (value) => ref.read(_todoTitle.notifier).state = value,
+              onChanged: (title) => todoEditController.title = title,
             ),
             const SizedBox(height: 32),
             EditScreenNoteSection(
-              todoNote,
-              onNoteChange: (note) => ref.read(_todoNote.notifier).state = note,
+              todoToEdit.note,
+              onNoteChange: (note) => todoEditController.note = note,
             ),
             const SizedBox(height: 32),
             EditScreenDateTimeSection(
-              todoDateTime,
+              todoToEdit.dateTime,
               onDateTimeChange: (dateTime) =>
-                  ref.read(_todoDateTime.notifier).state = dateTime,
+                  todoEditController.dateTime = dateTime,
             ),
             const Spacer(),
             SizedBox(
@@ -77,16 +56,9 @@ class _TodoEditScreenState extends ConsumerState<TodoEditScreen> {
               child: FilledButton(
                 style: roundedRectangleButtonStyle,
                 onPressed: () {
-                  final updateResult = _editTodo(
-                    todoTitle,
-                    todoNote,
-                    todoDateTime,
-                    todoController,
-                  );
-
-                  updateResult.then(
-                    (result) => Navigator.of(context).pop(result),
-                  );
+                  todoEditController
+                      .editTodo()
+                      .then((_) => Navigator.of(context).pop());
                 },
                 child: const Text('Edit Todo'),
               ),
@@ -95,20 +67,5 @@ class _TodoEditScreenState extends ConsumerState<TodoEditScreen> {
         ),
       ),
     );
-  }
-
-  Future<Todo?> _editTodo(
-    String title,
-    String note,
-    DateTime? dateTime,
-    TodoListController controller,
-  ) async {
-    final updatedTodo = widget.todo.copyWith(
-      title: title,
-      note: note.isEmpty ? null : note,
-      dateTime: dateTime,
-    );
-
-    return await controller.editTodo(updatedTodo) ? updatedTodo : null;
   }
 }
