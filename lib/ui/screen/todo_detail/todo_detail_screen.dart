@@ -16,10 +16,17 @@ class TodoDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final todo =
-        ref.watch(todoDetailControllerProvider(todoId)).requireValue;
+    final todoAsync = ref.watch(todoDetailControllerProvider(todoId));
     final todoController = ref.watch(todoListControllerProvider.notifier);
 
+    return todoAsync.when(
+      data: (todo) => _onSuccess(todo, todoController, context),
+      error: _onError,
+      loading: _onLoading,
+    );
+  }
+
+  Widget _onSuccess(Todo todo, TodoListController todoController, BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(todo.title),
@@ -49,7 +56,7 @@ class TodoDetailScreen extends ConsumerWidget {
                         Theme.of(context).colorScheme.onPrimaryContainer,
                       ),
                     ),
-                    onPressed: () => _showEditScreen(context, ref, todo),
+                    onPressed: () => _showEditScreen(context, todo),
                     child: const Text('Edit Todo'),
                   ),
                 ),
@@ -96,7 +103,15 @@ class TodoDetailScreen extends ConsumerWidget {
     );
   }
 
-  void _showEditScreen(BuildContext context, WidgetRef ref, Todo todo) {Navigator.of(context).push(MaterialPageRoute(
+  Widget _onError(Object error, StackTrace stackTrace) {
+    return Text(error.toString());
+  }
+
+  Widget _onLoading() {
+    return const CircularProgressIndicator();
+  }
+
+  void _showEditScreen(BuildContext context, Todo todo) {Navigator.of(context).push(MaterialPageRoute(
       builder: (ctx) => TodoEditScreen(todo),
     ));
   }
