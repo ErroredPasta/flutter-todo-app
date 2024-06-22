@@ -332,7 +332,7 @@ class _TodoEditControllerProviderElement
   Todo get todo => (origin as TodoEditControllerProvider).todo;
 }
 
-String _$todoAddControllerHash() => r'e9003adbfa44210151c0ede5f181002babe12a2c';
+String _$todoAddControllerHash() => r'd5e6baa48b0d52ddd97752d6f3aeb87bcdc086a5';
 
 /// See also [TodoAddController].
 @ProviderFor(TodoAddController)
