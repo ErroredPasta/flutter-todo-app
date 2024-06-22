@@ -1,7 +1,10 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:todo_app/data/database/todo_table_info.dart';
 
-final Map<int, Future<void> Function(Database)> databaseMigrations = {
+typedef Version = int;
+typedef MigrationFunction = Future<void> Function(Database);
+
+final Map<Version, MigrationFunction> databaseMigrations = {
   2: migrateFromV1ToV2
 };
 

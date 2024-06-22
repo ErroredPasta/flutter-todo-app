@@ -34,18 +34,19 @@ class DatabaseHelper {
           )
           ''');
 
-        for (int v = 2; v <= version; ++v) {
-          final migrationFunction = databaseMigrations[v]!;
-          await migrationFunction(db);
-        }
+        await migrate(db, 1, version);
       },
       onUpgrade: (db, oldVersion, newVersion) async {
-        for (int v = oldVersion + 1; v <= newVersion; ++v) {
-          final migrationFunction = databaseMigrations[v]!;
-          await migrationFunction(db);
-        }
+        await migrate(db, oldVersion, newVersion);
       },
     );
+  }
+
+  Future<void> migrate(Database db, int from, int to) async {
+    for (int v = from + 1; v <= to; ++v) {
+      final migrationFunction = databaseMigrations[v]!;
+      await migrationFunction(db);
+    }
   }
 }
 
