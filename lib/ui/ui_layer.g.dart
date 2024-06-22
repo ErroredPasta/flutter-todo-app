@@ -190,7 +190,7 @@ class _TodoDetailControllerProviderElement
 }
 
 String _$todoEditControllerHash() =>
-    r'373bc21c264cc716e6781b7010df370326932587';
+    r'29bc7edc24d0853f7d4adb7f629d51a0452230ce';
 
 abstract class _$TodoEditController extends BuildlessAutoDisposeNotifier<Todo> {
   late final Todo todo;
@@ -331,5 +331,22 @@ class _TodoEditControllerProviderElement
   @override
   Todo get todo => (origin as TodoEditControllerProvider).todo;
 }
+
+String _$todoAddControllerHash() => r'e9003adbfa44210151c0ede5f181002babe12a2c';
+
+/// See also [TodoAddController].
+@ProviderFor(TodoAddController)
+final todoAddControllerProvider =
+    AutoDisposeNotifierProvider<TodoAddController, Todo>.internal(
+  TodoAddController.new,
+  name: r'todoAddControllerProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$todoAddControllerHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$TodoAddController = AutoDisposeNotifier<Todo>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
