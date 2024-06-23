@@ -104,11 +104,11 @@ class TodoDetailScreen extends ConsumerWidget {
   }
 
   Widget _onError(Object error, StackTrace stackTrace) {
-    return Text(error.toString());
+    return Scaffold(body: Text(error.toString()));
   }
 
   Widget _onLoading() {
-    return const CircularProgressIndicator();
+    return const Scaffold(body: CircularProgressIndicator());
   }
 
   void _showEditScreen(BuildContext context, Todo todo) {Navigator.of(context).push(MaterialPageRoute(
