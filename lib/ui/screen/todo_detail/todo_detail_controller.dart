@@ -17,6 +17,8 @@ class TodoDetailController extends _$TodoDetailController {
   }
 
   Future<void> toggleDone() async {
+    if (!state.hasValue) return;
+
     final todo = state.requireValue;
     final repository = await ref.watch(todoRepositoryProvider.future);
 
