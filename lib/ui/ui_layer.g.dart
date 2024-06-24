@@ -190,7 +190,7 @@ class _TodoDetailControllerProviderElement
 }
 
 String _$todoEditControllerHash() =>
-    r'29bc7edc24d0853f7d4adb7f629d51a0452230ce';
+    r'89c765fe0627aff1b08004a185dd1e35cc3b13e2';
 
 abstract class _$TodoEditController extends BuildlessAutoDisposeNotifier<Todo> {
   late final Todo todo;

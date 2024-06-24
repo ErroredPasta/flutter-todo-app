@@ -13,7 +13,7 @@ class TodoEditController extends _$TodoEditController {
 
   Future<void> editTodo() async {
     final repository = await ref.read(todoRepositoryProvider.future);
-    repository.editTodo(state);
+    await repository.editTodo(state);
     ref.invalidate(todoListControllerProvider);
   }
 }
