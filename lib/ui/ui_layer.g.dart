@@ -7,7 +7,7 @@ part of 'ui_layer.dart';
 // **************************************************************************
 
 String _$todoListControllerHash() =>
-    r'fdb988f7ff149e38d054608188764e211380e314';
+    r'bb6dbec0cde23f4528035d97afe6658851d4b7eb';
 
 /// See also [TodoListController].
 @ProviderFor(TodoListController)
