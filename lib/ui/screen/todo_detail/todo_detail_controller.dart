@@ -9,4 +9,18 @@ class TodoDetailController extends _$TodoDetailController {
       (todo) => todo.id == todoId,
     );
   }
+
+  Future<void> deleteTodo() async {
+    final repository = await ref.watch(todoRepositoryProvider.future);
+    await repository.deleteTodo(todoId);
+    ref.invalidate(todoListControllerProvider);
+  }
+
+  Future<void> toggleDone() async {
+    final todo = state.requireValue;
+    final repository = await ref.watch(todoRepositoryProvider.future);
+
+    await repository.editTodo(todo.copyWith(done: !todo.done));
+    ref.invalidate(todoListControllerProvider);
+  }
 }

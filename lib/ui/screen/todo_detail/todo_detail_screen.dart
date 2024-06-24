@@ -17,16 +17,16 @@ class TodoDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final todoAsync = ref.watch(todoDetailControllerProvider(todoId));
-    final todoController = ref.watch(todoListControllerProvider.notifier);
+    final controller = ref.watch(todoDetailControllerProvider(todoId).notifier);
 
     return todoAsync.when(
-      data: (todo) => _onSuccess(todo, todoController, context),
+      data: (todo) => _onSuccess(todo, controller, context),
       error: _onError,
       loading: _onLoading,
     );
   }
 
-  Widget _onSuccess(Todo todo, TodoListController todoController, BuildContext context) {
+  Widget _onSuccess(Todo todo, TodoDetailController controller, BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(todo.title),
@@ -75,7 +75,7 @@ class TodoDetailScreen extends ConsumerWidget {
                     ),
                     child: const Text('Delete Todo'),
                     onPressed: () =>
-                        _deleteButtonClick(context, todoController, todo.id),
+                        _deleteButtonClick(context, controller),
                   ),
                 ),
               ],
@@ -92,7 +92,7 @@ class TodoDetailScreen extends ConsumerWidget {
                   ),
                 ),
                 onPressed: () {
-                  todoController.toggleDone(todo);
+                  controller.toggleDone();
                 },
                 child: Text('Mark as ${todo.done ? "Not Done" : "Done"}'),
               ),
@@ -118,14 +118,13 @@ class TodoDetailScreen extends ConsumerWidget {
 
   void _deleteButtonClick(
     BuildContext context,
-    TodoListController todoController,
-    String todoId,
+    TodoDetailController todoController,
   ) {
     showDialog<bool>(
       context: context,
       builder: (context) => DeleteDialog(
         onDeleteClick: () {
-          todoController.deleteTodo(todoId);
+          todoController.deleteTodo();
           Navigator.of(context).pop();
         },
       ),

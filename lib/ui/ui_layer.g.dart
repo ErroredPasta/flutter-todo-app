@@ -24,7 +24,7 @@ final todoListControllerProvider =
 
 typedef _$TodoListController = AutoDisposeAsyncNotifier<List<Todo>>;
 String _$todoDetailControllerHash() =>
-    r'ff5dd2f87b1f55ff6e1056c1ef6bbe06137d0873';
+    r'e450c12828d7e94b39e60f9edcf9d0567bda6f0f';
 
 /// Copied from Dart SDK
 class _SystemHash {
