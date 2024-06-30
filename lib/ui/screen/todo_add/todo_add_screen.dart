@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:todo_app/ui/component/rounded_rectangle_button.dart';
 import 'package:todo_app/ui/screen/todo_add/widget/add_screen_date_time_section.dart';
 import 'package:todo_app/ui/screen/todo_add/widget/add_screen_note_section.dart';
@@ -17,7 +18,7 @@ class TodoAddScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => context.pop(),
           icon: const Icon(Icons.close),
         ),
         title: const Text('New Todo'),
@@ -52,7 +53,7 @@ class TodoAddScreen extends ConsumerWidget {
                 onPressed: () {
                   todoAddController
                       .addTodo()
-                      .then((value) => Navigator.of(context).pop());
+                      .then((value) => context.pop());
                 },
                 child: const Text('Add Todo'),
               ),

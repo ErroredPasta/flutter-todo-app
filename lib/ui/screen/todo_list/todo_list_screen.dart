@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_app/ui/screen/todo_add/todo_add_screen.dart';
+import 'package:go_router/go_router.dart';
 import 'package:todo_app/ui/screen/todo_list/todo_item.dart';
 
 import '../../../domain/domain_layer.dart';
@@ -53,8 +53,6 @@ class TodoListScreen extends ConsumerWidget {
   }
 
   void _showAddScreen(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (ctx) => const TodoAddScreen(),
-    ));
+    context.push('/add');
   }
 }

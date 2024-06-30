@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/ui/screen/todo_detail/todo_detail_screen.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../domain/domain_layer.dart';
 
@@ -64,8 +64,6 @@ class TodoItem extends StatelessWidget {
   }
 
   void _onTodoItemTap(BuildContext context, String todoId) {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (ctx) => TodoDetailScreen(todoId),
-    ));
+    context.push('/detail/$todoId');
   }
 }

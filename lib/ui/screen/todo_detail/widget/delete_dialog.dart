@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class DeleteDialog extends StatelessWidget {
   final void Function() onDeleteClick;
@@ -14,13 +15,13 @@ class DeleteDialog extends StatelessWidget {
         TextButton(
           onPressed: () {
             onDeleteClick();
-            Navigator.of(context).pop();
+            context.pop();
           },
           child: const Text('Delete'),
         ),
         TextButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            context.pop();
           },
           child: const Text('Cancel'),
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:todo_app/ui/component/rounded_rectangle_button.dart';
 import 'package:todo_app/ui/screen/todo_edit/widget/edit_screen_date_time_section.dart';
 import 'package:todo_app/ui/screen/todo_edit/widget/edit_screen_note_section.dart';
@@ -21,7 +22,7 @@ class TodoEditScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => context.pop(),
           icon: const Icon(Icons.close),
         ),
         title: const Text('Edit Todo'),
@@ -58,7 +59,7 @@ class TodoEditScreen extends ConsumerWidget {
                 onPressed: () {
                   todoEditController
                       .editTodo()
-                      .then((_) => Navigator.of(context).pop());
+                      .then((_) => context.pop());
                 },
                 child: const Text('Edit Todo'),
               ),

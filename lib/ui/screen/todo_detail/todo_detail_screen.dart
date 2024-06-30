@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:todo_app/ui/component/rounded_rectangle_button.dart';
 import 'package:todo_app/ui/screen/todo_detail/widget/delete_dialog.dart';
 import 'package:todo_app/ui/screen/todo_detail/widget/detail_screen_date_time_section.dart';
 import 'package:todo_app/ui/screen/todo_detail/widget/detail_screen_note_section.dart';
-import 'package:todo_app/ui/screen/todo_edit/todo_edit_screen.dart';
 
 import '../../../domain/domain_layer.dart';
 import '../../ui_layer.dart';
@@ -26,7 +26,11 @@ class TodoDetailScreen extends ConsumerWidget {
     );
   }
 
-  Widget _onSuccess(Todo todo, TodoDetailController controller, BuildContext context) {
+  Widget _onSuccess(
+    Todo todo,
+    TodoDetailController controller,
+    BuildContext context,
+  ) {
     return Scaffold(
       appBar: AppBar(
         title: Text(todo.title),
@@ -74,8 +78,7 @@ class TodoDetailScreen extends ConsumerWidget {
                       ),
                     ),
                     child: const Text('Delete Todo'),
-                    onPressed: () =>
-                        _deleteButtonClick(context, controller),
+                    onPressed: () => _deleteButtonClick(context, controller),
                   ),
                 ),
               ],
@@ -111,9 +114,8 @@ class TodoDetailScreen extends ConsumerWidget {
     return const Scaffold(body: CircularProgressIndicator());
   }
 
-  void _showEditScreen(BuildContext context, Todo todo) {Navigator.of(context).push(MaterialPageRoute(
-      builder: (ctx) => TodoEditScreen(todo),
-    ));
+  void _showEditScreen(BuildContext context, Todo todo) {
+    context.push('/edit', extra: todo);
   }
 
   void _deleteButtonClick(
@@ -125,7 +127,7 @@ class TodoDetailScreen extends ConsumerWidget {
       builder: (context) => DeleteDialog(
         onDeleteClick: () {
           todoController.deleteTodo();
-          Navigator.of(context).pop();
+          context.pop();
         },
       ),
     );
